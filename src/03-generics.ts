@@ -46,6 +46,11 @@ export class ChamberStorage<T> {
 //   - urgency: 'LOW' | 'HIGH'
 export interface Task {
   // TODO: Implement Task properties
+
+  id: number;
+  description: string;
+  urgency: 'LOW' | 'HIGH';
+  
 }
 
 
