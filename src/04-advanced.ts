@@ -13,6 +13,10 @@ import { AdultBee } from './02-bees';
 //   - performAnalysis(): string
 export interface Specialist {
   // TODO: Implement properties
+
+  specializationCode: string;
+  performAnalysis(): string;
+
 }
 
 // - Define an interface 'Guard' with:
@@ -20,13 +24,18 @@ export interface Specialist {
 //   - alertSignal(): string
 export interface Guard {
   // TODO: Implement properties
+
+  defendStation: string;
+  alertSignal(): string;
+
+
 }
 
 // - Define a type alias 'DefenseLead' that is an INTERSECTION of:
 //   - AdultBee
 //   - Specialist
 //   - Guard
-export type DefenseLead = any; // TODO: Implement intersection
+export type DefenseLead = AdultBee & Specialist & Guard; // TODO: Implement intersection
 
 
 // 2. Discriminated Unions for Hive Events
@@ -34,8 +43,14 @@ export type DefenseLead = any; // TODO: Implement intersection
 //   - type: 'harvest' (literal type)
 //   - producerId: number
 //   - potsAmount: number
+
 export interface HoneyHarvestEvent {
   // TODO: Implement fields
+
+  type: 'harvest';
+  producerId: number;
+  potsAmount: number;
+
 }
 
 // - Define 'IntruderAlertEvent' with:
@@ -44,6 +59,11 @@ export interface HoneyHarvestEvent {
 //   - dangerLevel: 'LOW' | 'MEDIUM' | 'HIGH'
 export interface IntruderAlertEvent {
   // TODO: Implement fields
+
+  type: 'alert';
+  sector: string;
+  dangerLevel: 'LOW' | 'MEDIUM' | 'HIGH';
+
 }
 
 // - Define 'SwarmRequestEvent' with:
@@ -52,6 +72,9 @@ export interface IntruderAlertEvent {
 //   - destination: string
 export interface SwarmRequestEvent {
   // TODO: Implement fields
+  type: 'swarm';
+  scoutId: number;
+  destination: string;
 }
 
 // - Define a Discriminated Union type 'HiveEvent' which is the union of the above three events.
