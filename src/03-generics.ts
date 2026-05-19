@@ -16,6 +16,25 @@
 //   - A method 'size(): number' to return the count of items in storage
 export class ChamberStorage<T> {
   // TODO: Implement ChamberStorage
+
+  private items: T[] = [];
+
+  addItem(item: T): void {
+    this.items.push(item);
+  }
+
+  getItem(index: number): T | undefined {
+    return this.items[index];
+  }
+
+  listItems(): T[] {
+    return [...this.items];
+  }
+
+  size(): number {
+    return this.items.length;
+  }
+
 }
 
 
