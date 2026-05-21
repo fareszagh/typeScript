@@ -78,21 +78,34 @@ export interface SwarmRequestEvent {
 }
 
 // - Define a Discriminated Union type 'HiveEvent' which is the union of the above three events.
-export type HiveEvent = any; // TODO: Replace with the union
+export type HiveEvent =
+  | HoneyHarvestEvent
+  | IntruderAlertEvent
+  | SwarmRequestEvent; // TODO: Replace with the union
 
 
 // 3. Custom Type Guards
 // - Implement a custom Type Guard 'isAlertEvent' to check if a 'HiveEvent' is an 'IntruderAlertEvent'.
 //   The return type annotation must use the 'is' keyword (e.g. 'event is IntruderAlertEvent').
-export function isAlertEvent(event: HiveEvent): any {
-  // TODO: Add type annotations and implementation
+// TODO: Add type annotations and implementation
+
+  export function isAlertEvent(
+  event: HiveEvent
+): event is IntruderAlertEvent {
+  return event.type === 'alert';
 }
+
 
 // - Implement a custom Type Guard 'isHarvestEvent' to check if a 'HiveEvent' is a 'HoneyHarvestEvent'.
 //   The return type annotation must use the 'is' keyword.
-export function isHarvestEvent(event: HiveEvent): any {
   // TODO: Add type annotations and implementation
+
+  export function isHarvestEvent(
+  event: HiveEvent
+): event is HoneyHarvestEvent {
+  return event.type === 'harvest';
 }
+
 
 
 // 4. Exhaustive Type Narrowing
@@ -101,7 +114,18 @@ export function isHarvestEvent(event: HiveEvent): any {
 //   - 'HoneyHarvestEvent': Return "Harvested <potsAmount> pots of honey from producer <producerId>"
 //   - 'IntruderAlertEvent': Return "ALARM! Sector <sector> under <dangerLevel> threat!"
 //   - 'SwarmRequestEvent': Return "Swarm sequence requested by scout <scoutId> to <destination>"
-export function processHiveEvent(event: HiveEvent): string {
+
+
   // TODO: Implement narrowing and return appropriate messages
-  return "";
+  export function processHiveEvent(event: HiveEvent): string {
+
+  if (isHarvestEvent(event)) {
+    return `Harvested ${event.potsAmount} pots of honey from producer ${event.producerId}`;
+  }
+
+  if (isAlertEvent(event)) {
+    return `ALARM! Sector ${event.sector} under ${event.dangerLevel} threat!`;
+  }
+
+  return `Swarm sequence requested by scout ${event.scoutId} to ${event.destination}`;
 }

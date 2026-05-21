@@ -10,7 +10,12 @@
 //   - temperature: number
 //   - windSpeed: number
 //   - status: 'SAFE' | 'WARNING' | 'DANGEROUS'
-export type WeatherReport = any; // TODO: Replace 'any'
+export type WeatherReport = {
+  temperature: number;
+  windSpeed: number;
+  status: 'SAFE' | 'WARNING' | 'DANGEROUS';
+};
+// TODO: Replace 'any'
 
 
 // 2. WeatherError Subclass
@@ -19,7 +24,13 @@ export type WeatherReport = any; // TODO: Replace 'any'
 //   - Accepts (message: string) and calls super(message)
 export class WeatherError extends Error {
   // TODO: Implement custom Error subclass
+  constructor(message: string) {
+    super(message);
+    this.name = 'WeatherError';
+  }
 }
+
+
 
 
 // 3. WeatherService Interface
@@ -28,7 +39,10 @@ export class WeatherError extends Error {
 //   - getWeather(locationName: string): Promise<WeatherReport>
 export interface WeatherService {
   // TODO: Implement getWeather signature
+  getWeather(locationName: string): Promise<WeatherReport>;
 }
+
+
 
 
 // 4. HiveDispatcher Class
@@ -46,6 +60,29 @@ export interface WeatherService {
 //          - If 'DANGEROUS': Throw a new 'WeatherError("Dangerous weather: dispatch aborted")'
 //          - If 'WARNING': Return "Warning: Deployed <foragerNames.length> foragers with safety gear"
 //          - If 'SAFE': Return "Success: Deployed <foragerNames.length> foragers"
+
 export class HiveDispatcher {
-  // TODO: Implement HiveDispatcher
+   // TODO: Implement HiveDispatcher
+  private weatherService: WeatherService;
+
+  constructor(weatherService: WeatherService) {
+    this.weatherService = weatherService;
+  }
+
+  async dispatchSquad(
+    locationName: string,
+    foragerNames: string[]
+  ): Promise<string> {
+    const report = await this.weatherService.getWeather(locationName);
+
+    if (report.status === 'DANGEROUS') {
+      throw new WeatherError('Dangerous weather: dispatch aborted');
+    }
+
+    if (report.status === 'WARNING') {
+      return `Warning: Deployed ${foragerNames.length} foragers with safety gear`;
+    }
+
+    return `Success: Deployed ${foragerNames.length} foragers`;
+  }
 }
